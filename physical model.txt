@@ -1,0 +1,77 @@
+@startuml
+entity photo {
+ *id: serial
+ --
+ *name: text
+ *id_album: unsigned bigint
+ *id_user: unsigned bigint
+ *created_at: timestamp
+ *views: unsigned bigint
+ *likes: unsigned bigint
+}
+
+entity album{
+ *id: serial
+ --
+ *name: text
+ *photo_amount: unsigned bigint
+ *id_user: unsigned bigint
+ *created_at: timestamp
+ *last_modified: timestamp
+ *description: text
+ *views: unsigned bigint
+ *likes: unsigned bigint
+}
+
+entity user{
+ *id: serial
+ --
+ *name: text
+ *password: text
+ *created_at: timestamp
+ *last_login: timestamp
+}
+
+entity comment{
+ *id: serial
+ --
+ *id_parent: unsigned bigint
+ *id_user: unsigned bigint
+ *created_at: timestamp
+ *last_modified: timestamp
+ *likes: unsigned bigint
+ *content: text
+}
+
+entity tag{
+ *id: serial
+ --
+ *name: text
+}
+
+entity tags{
+ *id: serial
+ --
+ *id_photo: unsigned bigint
+ *id_tag: unsigned bigint
+}
+
+entity parent{
+ *id: serial
+ --
+ *type: text
+ *id_parent: unsigned bigint
+}
+
+
+
+album --|{ photo
+user --|{ album
+user --|{ comment
+parent --|{comment
+photo ||--|| parent
+album ||--|| parent
+comment ||--|| parent
+tags --|{ photo
+tags --|{ tag
+@enduml
