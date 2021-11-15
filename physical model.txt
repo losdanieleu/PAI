@@ -5,6 +5,7 @@ entity photo {
  *name: text
  *id_album: unsigned bigint
  *id_user: unsigned bigint
+ *photo_path: text
  *created_at: timestamp
  *views: unsigned bigint
  *likes: unsigned bigint

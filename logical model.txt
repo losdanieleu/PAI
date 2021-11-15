@@ -3,6 +3,7 @@ entity photo {
  *id: serial
  --
  *name: text
+ *photo_path: text
  *created_at: timestamp
  *views: unsigned bigint
  *likes: unsigned bigint

@@ -1,6 +1,7 @@
 @startuml
 entity photo {
  *name
+ *photo_path
  *created_at
  *views
  *likes
