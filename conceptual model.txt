@@ -1,21 +1,14 @@
 @startuml
 entity photo {
- *id
- --
  *name
- *album
- *user
  *created_at
  *views
  *likes
 }
 
 entity album{
- *id
- --
  *name
  *photo_amount
- *user
  *created_at
  *last_modified
  *description
@@ -24,8 +17,6 @@ entity album{
 }
 
 entity user{
- *id
- --
  *name
  *password
  *created_at
@@ -33,10 +24,6 @@ entity user{
 }
 
 entity comment{
- *id
- --
- *parent
- *user
  *created_at
  *last_modified
  *likes
@@ -44,21 +31,12 @@ entity comment{
 }
 
 entity tag{
- *id
- --
  *name
 }
 
-entity tags{
- *id
- --
- *photo_id
- *tag_id
-}
+
 
 entity parent{
- *id
- --
  *type
  *parent_id
 }
@@ -72,6 +50,5 @@ parent --|{comment
 photo ||--|| parent
 album ||--|| parent
 comment ||--|| parent
-tags --|{ photo
-tags --|{ tag
+photo }|--|{ tag
 @enduml
