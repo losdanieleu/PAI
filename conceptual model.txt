@@ -37,19 +37,8 @@ entity tag{
 
 
 
-entity parent{
- *type
- *parent_id
-}
-
-
-
-album --|{ photo
-user --|{ album
-user --|{ comment
-parent --|{comment
-photo ||--|| parent
-album ||--|| parent
-comment ||--|| parent
+album --o{ photo
+user --o{ album
+user --o{ comment
 photo }|--|{ tag
 @enduml

@@ -3,25 +3,25 @@ entity photo {
  *id: serial
  --
  *name: text
- *id_album: unsigned bigint
- *id_user: unsigned bigint
+ *id_album: unsigned bigint(20)
+ *id_user: unsigned bigint(20)
  *photo_path: text
  *created_at: timestamp
- *views: unsigned bigint
- *likes: unsigned bigint
+ *views: unsigned bigint(20)
+ *likes: unsigned bigint(20)
 }
 
 entity album{
  *id: serial
  --
  *name: text
- *photo_amount: unsigned bigint
- *id_user: unsigned bigint
+ *photo_amount: unsigned bigint(20)
+ *id_user: unsigned bigint(20)
  *created_at: timestamp
  *last_modified: timestamp
  *description: text
- *views: unsigned bigint
- *likes: unsigned bigint
+ *views: unsigned bigint(20)
+ *likes: unsigned bigint(20)
 }
 
 entity user{
@@ -36,11 +36,11 @@ entity user{
 entity comment{
  *id: serial
  --
- *id_parent: unsigned bigint
- *id_user: unsigned bigint
+ *id_photo: unsigned bigint(20)
+ *id_user: unsigned bigint(20)
  *created_at: timestamp
  *last_modified: timestamp
- *likes: unsigned bigint
+ *likes: unsigned bigint(20)
  *content: text
 }
 
@@ -53,26 +53,16 @@ entity tag{
 entity tags{
  *id: serial
  --
- *id_photo: unsigned bigint
- *id_tag: unsigned bigint
-}
-
-entity parent{
- *id: serial
- --
- *type: text
- *id_parent: unsigned bigint
+ *id_photo: unsigned bigint(20)
+ *id_tag: unsigned bigint(20)
 }
 
 
 
-album --|{ photo
-user --|{ album
-user --|{ comment
-parent --|{comment
-photo ||--|| parent
-album ||--|| parent
-comment ||--|| parent
+album --o{ photo
+user --o{ album
+user --o{ comment
 tags --|{ photo
 tags --|{ tag
+comment }o-- photo
 @enduml
