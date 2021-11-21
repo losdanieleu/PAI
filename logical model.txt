@@ -2,7 +2,7 @@
 entity photo {
  *id: serial
  --
- *name: text
+ *name: varchar
  *photo_path: text
  *created_at: timestamp
  *views: unsigned bigint(20)
@@ -12,7 +12,7 @@ entity photo {
 entity album{
  *id: serial
  --
- *name: text
+ *name: varchar
  *photo_amount: unsigned bigint(20)
  *created_at: timestamp
  *last_modified: timestamp
@@ -24,7 +24,7 @@ entity album{
 entity user{
  *id: serial
  --
- *name: text
+ *name: varchar
  *password: text
  *created_at: timestamp
  *last_login: timestamp
@@ -42,7 +42,7 @@ entity comment{
 entity tag{
  *id: serial
  --
- *name: text
+ *name: varchar
 }
 
 album --o{ photo

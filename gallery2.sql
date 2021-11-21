@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 17 Lis 2021, 20:44
+-- Czas generowania: 21 Lis 2021, 16:02
 -- Wersja serwera: 10.4.14-MariaDB
 -- Wersja PHP: 7.4.9
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `gallery`
+-- Baza danych: `gallery2`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `album` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` text COLLATE utf8_polish_ci NOT NULL,
+  `name` varchar(10) COLLATE utf8_polish_ci NOT NULL,
   `photo_amount` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -63,7 +63,7 @@ CREATE TABLE `comment` (
 
 CREATE TABLE `photo` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` text COLLATE utf8_polish_ci NOT NULL,
+  `name` varchar(10) COLLATE utf8_polish_ci NOT NULL,
   `id_album` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
   `photo_path` text COLLATE utf8_polish_ci NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE `photo` (
 
 CREATE TABLE `tag` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` text COLLATE utf8_polish_ci NOT NULL
+  `name` varchar(10) COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
@@ -103,7 +103,7 @@ CREATE TABLE `tags` (
 
 CREATE TABLE `user` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` text COLLATE utf8_polish_ci NOT NULL,
+  `name` varchar(10) COLLATE utf8_polish_ci NOT NULL,
   `password` text COLLATE utf8_polish_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `last_login` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -118,21 +118,26 @@ CREATE TABLE `user` (
 --
 ALTER TABLE `album`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indeksy dla tabeli `comment`
 --
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_photo` (`id_photo`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indeksy dla tabeli `photo`
 --
 ALTER TABLE `photo`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_album` (`id_album`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indeksy dla tabeli `tag`
@@ -146,7 +151,9 @@ ALTER TABLE `tag`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_photo` (`id_photo`),
+  ADD KEY `id_tag` (`id_tag`);
 
 --
 -- Indeksy dla tabeli `user`
@@ -194,6 +201,37 @@ ALTER TABLE `tags`
 --
 ALTER TABLE `user`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Ograniczenia dla zrzutów tabel
+--
+
+--
+-- Ograniczenia dla tabeli `album`
+--
+ALTER TABLE `album`
+  ADD CONSTRAINT `album_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
+
+--
+-- Ograniczenia dla tabeli `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_photo`) REFERENCES `photo` (`id`),
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
+
+--
+-- Ograniczenia dla tabeli `photo`
+--
+ALTER TABLE `photo`
+  ADD CONSTRAINT `photo_ibfk_1` FOREIGN KEY (`id_album`) REFERENCES `album` (`id`),
+  ADD CONSTRAINT `photo_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
+
+--
+-- Ograniczenia dla tabeli `tags`
+--
+ALTER TABLE `tags`
+  ADD CONSTRAINT `tags_ibfk_1` FOREIGN KEY (`id_photo`) REFERENCES `photo` (`id`),
+  ADD CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`id_tag`) REFERENCES `tag` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
