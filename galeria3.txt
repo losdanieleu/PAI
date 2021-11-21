@@ -100,7 +100,6 @@ CREATE TABLE `tags` (
   `id_photo` bigint(20) UNSIGNED NOT NULL,
   `id_tag` bigint(20) UNSIGNED NOT NULL,
    PRIMARY KEY(`id_photo`,`id_tag`),
-   UNIQUE KEY(`id`),
    FOREIGN KEY(`id_photo`) REFERENCES `photo`(`id`),
    FOREIGN KEY(`id_tag`) REFERENCES `tag`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
